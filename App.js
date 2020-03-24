@@ -1,7 +1,9 @@
-import React from 'react';
-import { createAppContainer } from 'react-navigation';
+import React,{Component} from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { createAppContainer,createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Root } from 'native-base';
+import Storage from '@Utils/Storage';
 import NavigationService from './app/Service/Navigation';
 import LoginScreen from './app/screen/Auth/loginScreen'
 import RegisterScreen from './app/screen/Auth/registerScreen';
@@ -359,14 +361,62 @@ const MainNavigator = createStackNavigator({
   headerMode: 'none'
 });
 
-const AppRoot = createAppContainer(MainNavigator);
+class AppLoading extends Component {
+
+  constructor(props) {
+    super(props);
+       this._logData();
+   }
+
+   _logData = async() => {
+    let data = await Storage.get('account');
+    console.log(data)
+    this.props.navigation.navigate(data!=null ? 'App' : 'Auth');
+  
+   }
+ render() {
+  return (
+    <View style={{flex: 1,justifyContent: 'center'}}>
+          <ActivityIndicator size="large" color="#33B5FF" />
+    </View>
+   );
+ }
+} 
+
+
+const LoginCheck=createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AppLoading,
+      App: HomeStackNavigator,
+      Auth: MainNavigator,
+    },
+    {
+      initialRouteName: 'AuthLoading',
+    }
+  
+  )
+)
+
+
 
 export default class App extends React.Component{
   render(){
       return(
         <Root>
-          <AppRoot ref={(r) => {NavigationService.setTopLevelNavigator(r)}}/>
+          <LoginCheck ref={(r) => {NavigationService.setTopLevelNavigator(r)}}/>
         </Root>
       )
     }
   }
+// const AppRoot = createAppContainer(MainNavigator);
+
+// export default class App extends React.Component{
+//   render(){
+//       return(
+//         <Root>
+//           <AppRoot ref={(r) => {NavigationService.setTopLevelNavigator(r)}}/>
+//         </Root>
+//       )
+//     }
+//   }

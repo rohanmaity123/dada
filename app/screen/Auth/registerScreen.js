@@ -35,16 +35,16 @@ class RegisterScreen extends React.Component{
             
           }else{
             let data = await Auth.register(this.state.name,this.state.mobile,this.state.email,this.state.pass);
-        // console.log(data)
+        console.log("data",data)
             
-            // if(data.status==true){
-            //  let regdata = await Auth.setAccount(data.data);
-            //  console.log(regdata)
+            if(data.status==true){
+             let regdata = await Auth.setAccount(data.data);
+             console.log(regdata)
                 ToastAndroid.show('Registered Successfully', ToastAndroid.SHORT);
                 NavigationService.navigate('HomeStack');
-            // }else{
-            //     ToastAndroid.show('Email Id or Mobile Number already Exist', ToastAndroid.SHORT);            
-            // }
+            }else{
+                ToastAndroid.show('Email Id or Mobile Number already Exist', ToastAndroid.SHORT);            
+            }
           }
         
     }

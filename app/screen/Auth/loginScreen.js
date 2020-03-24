@@ -1,6 +1,6 @@
 import React from 'react';
 import{
-    View,Image,Text, TextInput, StyleSheet, TouchableOpacity, Modal
+    View,Image,Text, TextInput, StyleSheet, TouchableOpacity, Modal,ToastAndroid
 }from 'react-native';
 import { Button } from 'native-base';
 import AuthService from '@Service/Auth';
@@ -17,17 +17,17 @@ class LoginScreen extends React.Component{
       }
     async login() {
         let deta=  await AuthService.login(this.state.mobile,this.state.pass)
-        //  if(deta.status==true){
+         if(deta.status==true){
             this.setState({
               account: deta.data,
           });
           ToastAndroid.show('Login Successfully', ToastAndroid.SHORT);
           await AuthService.setAccount(this.state.account);
-          NavigationService.navigate('CarScreen');
-        //  }else{
-        //     ToastAndroid.show('Invalid Mobile Number or Password', ToastAndroid.SHORT)
+          NavigationService.navigate('HomeStack');
+         }else{
+            ToastAndroid.show('Invalid Mobile Number or Password', ToastAndroid.SHORT)
         
-        //  }
+         }
       }
     render(){
         return(
@@ -44,6 +44,7 @@ class LoginScreen extends React.Component{
                         <TextInput 
                             style={styles.inputField} 
                             placeholder="Enter Mobile No."
+                            keyboardType={'number-pad'} maxLength={10}
                             onChangeText={(value)=>this.setState({ mobile: value})}
                              value={this.state.mobile}
                         />
@@ -53,7 +54,14 @@ class LoginScreen extends React.Component{
                             onChangeText={(value)=>this.setState({ pass: value})}
                         value={this.state.pass}
                         />
-                        <Button style={{backgroundColor:'#f8bc06',width:'30%',justifyContent:'center',borderRadius:50,marginTop:10}} onPress={this.login}>
+                        <Button style={{
+                            backgroundColor:'#f8bc06',
+                            width:'30%',
+                            justifyContent:'center',
+                            borderRadius:50,
+                            marginTop:10
+                        }} 
+                            onPress={()=>this.login()}>
                             <Text style={{fontWeight:'bold'}}>Log In</Text>
                         </Button>
                     </View>
