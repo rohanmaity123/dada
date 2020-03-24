@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { createAppContainer,createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { Root } from 'native-base';
+import { Root} from 'native-base';
 import Storage from '@Utils/Storage';
 import NavigationService from './app/Service/Navigation';
 import LoginScreen from './app/screen/Auth/loginScreen'
@@ -50,6 +50,7 @@ import GrocerySupport from './app/screen/Grocery/Support/supportScreen';
 import SingleShop from './app/screen/Grocery/Shop/singleShop';
 import ShopFeedbackCard from './app/screen/Grocery/ShopReviewes/shopReview';
 import GroceryCatagoryType from './app/screen/Grocery/Category/categoryType';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const HomeStackNavigator = createStackNavigator({
@@ -216,7 +217,7 @@ const HomeTabNavigator = createBottomTabNavigator({
     screen: HomeStackNavigator,
     navigationOptions:{
       title:'Home',
-      tabBarIcon: ({ tintColor }) => <FontAwesome name="home" size={30} color={tintColor} />
+      tabBarIcon: ({ tintColor }) => <Icon name="home" type="AntDesign" size={30} color={tintColor} />
     }
   },
   WalletTab:{
@@ -388,8 +389,9 @@ const LoginCheck=createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AppLoading,
-      App: HomeStackNavigator,
+      App: HomeTabNavigator,
       Auth: MainNavigator,
+
     },
     {
       initialRouteName: 'AuthLoading',

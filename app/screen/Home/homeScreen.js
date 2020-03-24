@@ -2,23 +2,17 @@ import React from 'react';
 import {
     View,Image,StyleSheet, ScrollView, Text, TouchableOpacity
 }from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import ImageSlider from 'react-native-image-slider';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { Card } from 'native-base';
 import OfferCard from '@Component/Home/offerCard';
 import ProductCard from '@Component/Home/productCard';
-import { PowerTranslator, ProviderTypes, TranslatorConfiguration, TranslatorFactory } from 'react-native-power-translator';
 import NavigationService from '../../Service/Navigation';
-
+import ImageSlider from 'react-native-image-slider';
+import { Icon } from 'native-base';
 
 class HomeScreen extends React.Component{
     static navigationOptions = ({navigation}) => ({
         headerRight: (
             <View style={{flexDirection:'row'}}>
-              {/* <MaterialIcons name="notifications-active" size={30} style={{marginRight:15}}/> */}
-              <Feather name="log-in" size={30} style={{marginRight:15}} onPress={()=>navigation.navigate('Login')}/>
+                <Icon name="logout" type="AntDesign" />
             </View>
         ),
     });

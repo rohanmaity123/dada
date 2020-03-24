@@ -6,8 +6,28 @@ import {
 } from 'react-native';
 // import AllHeaderWithCart from '@Component/Headers/HeaderWithCart/allHeaderwithCart';
 import { Body, Button, Card } from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
+import AuthService from '@Service/Auth';
 
 class AccountScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          userResult:{}
+        };
+      }
+
+      componentDidMount(){
+        this.fetchdetails()
+      }
+
+      fetchdetails=async()=>{
+        let result =await AuthService.getAccount()
+        console.log(result)
+        this.setState({
+          userResult:result,
+        })
+      }
     render() {
         return (
             <View style={{flex:1}}>
@@ -17,11 +37,11 @@ class AccountScreen extends React.Component {
                         <Text style={{ textAlign: 'center',fontWeight:'bold' }}>Freequent Rider Profile</Text>
                         <View>
                             <View style={{ flexDirection: 'row', marginTop: '10%' }}>
-                                <Text style={{ marginLeft: '6%', fontSize: 18, fontStyle: 'italic', fontWeight: 'bold' }}>Rohan Maity</Text>
+        <Text style={{ marginLeft: '6%', fontSize: 18, fontStyle: 'italic', fontWeight: 'bold' }}>{this.state.userResult.username}</Text>
                                 <Text style={{ color: 'orange', marginLeft: '26%', fontSize: 18, fontStyle: 'italic', fontWeight: 'bold' }} onPress={() => this.props.navigation.navigate('EditDetailsScreen')}>Edit Details</Text>
                             </View>
-                            <Text style={{ marginLeft: '6%', fontSize: 18, fontStyle: 'italic', marginTop: '5%', fontWeight: 'bold' }}>7001631885</Text>
-                            <Text style={{ marginLeft: '6%', fontStyle: 'italic', fontSize: 18, marginTop: '5%',color:'#8c8c8c' }}>maityrohan420@gmail.com</Text>
+                            <Text style={{ marginLeft: '6%', fontSize: 18, fontStyle: 'italic', marginTop: '5%', fontWeight: 'bold' }}>{this.state.userResult.phone}</Text>
+        <Text style={{ marginLeft: '6%', fontStyle: 'italic', fontSize: 18, marginTop: '5%',color:'#8c8c8c' }}>{this.state.userResult.email}</Text>
                         </View>
                         <View style={{ marginTop: '5%' }}>
                             <Card style={{ height: 90 }}>
