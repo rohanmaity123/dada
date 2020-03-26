@@ -7,12 +7,21 @@ import ProductCard from '@Component/Home/productCard';
 import NavigationService from '../../Service/Navigation';
 import ImageSlider from 'react-native-image-slider';
 import { Icon } from 'native-base';
+import AuthService from '@Service/Auth';
 
 class HomeScreen extends React.Component{
+    async logout(){
+        AsyncStorage.clear();
+        await AuthService.logout(); 
+        NavigationService.navigate('Auth');
+     
+      }
     static navigationOptions = ({navigation}) => ({
         headerRight: (
             <View style={{flexDirection:'row'}}>
-                <Icon name="logout" type="AntDesign" />
+                <TouchableOpacity onPress={()=>this.logout()}>
+                    <Icon name="logout" type="AntDesign"  />
+                </TouchableOpacity>            
             </View>
         ),
     });

@@ -9,8 +9,28 @@ import {
 }from 'react-native';
 import AllNormalHeader from '@Component/Headers/normalHeaders/allNormalHeader'; 
 import { Button, Card, Body } from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
+import AuthService from '@Service/Auth';
 
 class EditProfile extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+          userResult:{}
+        };
+      }
+
+    componentDidMount(){
+        this.fetchdetails()
+      }
+
+      fetchdetails=async()=>{
+        let result =await AuthService.getAccount()
+        console.log(result)
+        this.setState({
+          userResult:result,
+        })
+      }
     render(){
         return(
             <View style={{flex:1}}>
@@ -29,7 +49,7 @@ class EditProfile extends React.Component{
                     <View style={{backgroundColor:'#eee',height:'100%'}}>
                         <View style={styles.container}>
                             <Text style={styles.title}>First Name :</Text>
-                            <TextInput style={{width:'60%'}} placeholder="Enter First Name"/>
+                            <TextInput style={{width:'60%'}} placeholder="Enter First Name" value={this.state.userResult.username}/>
                         </View>
                         <View style={styles.container}>
                             <Text style={styles.title}>Last Name :</Text>
@@ -37,11 +57,11 @@ class EditProfile extends React.Component{
                         </View>
                         <View style={styles.container}>
                             <Text style={styles.title}>Email :</Text>
-                            <TextInput style={{width:'60%'}} placeholder="Enter Email" />
+                            <TextInput style={{width:'60%'}} placeholder="Enter Email" value={this.state.userResult.email} />
                         </View>
                         <View style={styles.container}>
                             <Text style={styles.title}>Phone No :</Text>
-                            <TextInput style={{width:'60%'}} placeholder="Enter Phone No"/>
+                            <TextInput style={{width:'60%'}} placeholder="Enter Phone No" value={this.state.userResult.phone}/>
                         </View>
                         <View style={styles.container}>
                             <Text style={styles.title}>Password :</Text>

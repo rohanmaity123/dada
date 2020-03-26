@@ -7,8 +7,18 @@ import { Icon, Card } from 'native-base';
 import ImageSlider from 'react-native-image-slider';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ShopCard from '../../../components/Grocery/Home/shopCard';
+import groceryService from '../../../Service/groceryService';
 
 class GroceryHomeScreen extends React.Component{
+
+    async componentDidMount() {
+        await this.shopDetails();
+    }
+
+    shopDetails = async () =>{
+        let shop = groceryService.getshopdetails()
+        console.log(shop)
+    }
     render(){
         const images = [
             require('@Assets/images/slider_food.png'),
@@ -28,7 +38,7 @@ class GroceryHomeScreen extends React.Component{
             {
                 name:''
             },
-        ]
+        ]       
         const Width = Dimensions.get('screen').width; 
         return(
             <View style={{flex:1}}>

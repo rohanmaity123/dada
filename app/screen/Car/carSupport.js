@@ -12,9 +12,14 @@ import {
     Dimensions,
     ScrollView
 } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { Card, Body, Icon, Button, ListItem, Left, Right, Radio, CardItem } from 'native-base';
-import { Searchbar, shadow } from 'react-native-paper';
+import MapView, { Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import { Card, Body, Icon, Button} from 'native-base';
+import { Searchbar } from 'react-native-paper';
+import Geocoder from 'react-native-geocoder';
+import Geolocation from '@react-native-community/geolocation';
+
+Geocoder.fallbackToGoogle('AIzaSyBGASSMRX7md1th-YBZCkuxvLfLIOtZ_0A');
+API_KEY = "AIzaSyBGASSMRX7md1th-YBZCkuxvLfLIOtZ_0A";
 
 class CarScreen extends React.Component {
     state = {
@@ -32,8 +37,59 @@ class CarScreen extends React.Component {
             Furniture: false,
             shortModal: false,
             carModal: false,
+            coordinate: {
+                latitude: 22.5726,
+                longitude: 88.3639,
+            },
+            latitude: 20.5937,
+            longitude: 78.9629,
+            initialRegion: {
+                latitude: 28.5937,
+                longitude: 78.9629,
+                latitudeDelta: 5,
+                longitudeDelta: 5
+            },
         }
     };
+
+    async getCurrentLocation() {
+        Geolocation.getCurrentPosition(async (info) => {
+            let region = {
+                latitude: info.coords.latitude,
+                longitude: info.coords.longitude,
+                latitudeDelta: 5,
+                longitudeDelta: 5
+            };
+            await this.setState({
+                initialRegion: region,
+                coordinate: {
+                    latitude: info.coords.latitude,
+                    longitude: info.coords.longitude,
+                },
+                Currentlatitude: info.coords.latitude,
+                Currentlongitude: info.coords.longitude,
+                newCurrentLat: info.coords.latitude,
+                newCurrentLong : info.coords.longitude
+            });
+
+            let lat = info.coords.latitude;
+            let lng = info.coords.longitude;
+            let ret = await Geocoder.geocodePosition({ lat, lng });
+            console.log(ret[0].formattedAddress)
+            this.setState({
+                Currentlocation: ret[0].formattedAddress
+            })
+
+        });
+
+    }
+
+    goToInitialLocation() {
+        let initialRegion = Object.assign({}, this.state.coordinate);
+        initialRegion["latitudeDelta"] = 0.0015;
+        initialRegion["longitudeDelta"] = 0.0015;
+        this.mapView.animateToRegion(initialRegion, 3000);
+    }
 
     render() {
         const Width = Dimensions.get('window').width;
@@ -46,13 +102,20 @@ class CarScreen extends React.Component {
                 <MapView
                     style={{ flex: 1 }}
                     provider={PROVIDER_GOOGLE}
-                    showsUserLocation
-                    initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421
-                    }}
+                    followUserLocation={true}
+                    ref={ref => (this.mapView = ref)}
+                    zoomEnabled={true}
+                    pitchEnabled={false}
+                    showsBuildings={false}
+                    showsTraffic={false}
+                    showsIndoors={false}
+                    showsUserLocation={true}
+                    followsUserLocation={true}
+                    showsMyLocationButton={true}
+                    showsPointsOfInterest={true}
+                    showsCompass={true}
+                    onMapReady={this.goToInitialLocation.bind(this)}
+                    initialRegion={this.state.initialRegion}
                 />
                 <View style={{ position: 'absolute', width: '100%', top: 80 }}>
                     <View >
