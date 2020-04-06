@@ -1,12 +1,16 @@
 import HttpClient from '@Utils/HttpClient'
 
 
-function getshopdetails(ShopData) {
-    let shop = 'no_of_shop.php';
-    console.log(shop)
-    return HttpClient.post(shop,ShopData);
+function getshopdetails() {
+    let shop = 'shop_details.php';
+    return HttpClient.get(shop);
 }
 
+function getproductdetails() {
+    let product = 'product_details.php';
+    return HttpClient.get(product);
+}
 export default {
     getshopdetails,
+    getproductdetails
 }

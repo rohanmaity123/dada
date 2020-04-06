@@ -1,23 +1,33 @@
 import React from 'react';
 import{
-    View, TextInput, Image, Dimensions, ScrollView,StyleSheet,Text
+    View, TextInput, Image, Dimensions, ScrollView,StyleSheet,Text,TouchableOpacity,TouchableWithoutFeedback
 }from 'react-native';
 import ServicesHomeHeader from '@Component/Headers/HomeHeaders/servicesHomeHeader';
 import { Icon, Card } from 'native-base';
 import ImageSlider from 'react-native-image-slider';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import NavigationService from '../../../Service/Navigation';
 import ShopCard from '../../../components/Grocery/Home/shopCard';
 import groceryService from '../../../Service/groceryService';
 
 class GroceryHomeScreen extends React.Component{
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            shopData: [],
+            shopNo:''
+        }
+    }
     async componentDidMount() {
         await this.shopDetails();
     }
 
-    shopDetails = async () =>{
-        let shop = groceryService.getshopdetails()
-        console.log(shop)
+    shopDetails = async () => {
+        let shop = await groceryService.getshopdetails()
+        // console.log(shop)
+        this.setState({
+            shopData: shop.data,
+            shopNo:shop.count,
+        })
     }
     render(){
         const images = [
@@ -25,20 +35,7 @@ class GroceryHomeScreen extends React.Component{
             require('@Assets/images/slider_food.png'),
             require('@Assets/images/slider_food.png'),
         ];
-        const hotel = [
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-        ]       
+
         const Width = Dimensions.get('screen').width; 
         return(
             <View style={{flex:1}}>
@@ -91,16 +88,10 @@ class GroceryHomeScreen extends React.Component{
 
                     <View>
                         <View style={{marginLeft:10}}>
-                            <Text style={{fontWeight:'bold'}}>4 Shop</Text>
+                                <Text style={{fontWeight:'bold'}}>Total {this.state.shopNo} Shops </Text>
                         </View>
                         <View>
-                            {
-                                hotel.map((item,index)=>{
-                                    return(
-                                        <ShopCard key={index}/>
-                                    )
-                                })
-                            }
+                            <ShopCard />
                         </View>
                     </View>
                 </ScrollView>

@@ -20,38 +20,16 @@ class SingleShop extends React.Component {
             catItalian:false,
             catContinental:false,
             catThaiFood:false,
-            categoriModal:false
+            categoriModal:false,
+            shopData:this.props.navigation.getParam('shopData',{}),
+            allProduct:[]
         }
+        console.log('shopData',this.state.shopData)
     }
+
     render() {
         const Width = Dimensions.get('window').width;
         const Height = Dimensions.get('window').height;
-        const arr = [
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-            {
-                name:''
-            },
-        ] 
         return (
             <View>
                 <AllHeaderWithCart name="Product Item" />
@@ -60,8 +38,12 @@ class SingleShop extends React.Component {
                         <CardItem style={{ borderBottomWidth: 1, borderBottomColor: '#cacbcb' }}>
                             <View style={{ flexDirection: 'row', width: '100%' }}>
                                 <View style={{ width: '70%' }}>
-                                    <Text style={{ fontWeight: 'bold' }}>RM Groffers</Text>
-                                    <Text style={{ marginVertical: 5 }}>Bidhannagar,Kolkata,India</Text>
+                                    <Text style={{ fontWeight: 'bold' }}>{this.state.shopData.name}</Text>
+                                    <Text style={{ marginVertical: 5 }}>
+                                        {this.state.shopData.street},
+                                        {this.state.shopData.city},
+                                        {this.state.shopData.state}
+                                    </Text>
                                 </View>
                                 <View style={{ justifyContent: 'center' }}>
                                     <View style={{ backgroundColor: '#f8bc06', width: Width / 5, height: 30, alignItems: 'center', justifyContent: 'center' }}>
@@ -86,22 +68,14 @@ class SingleShop extends React.Component {
                             </CardItem>
                         </View>
                     </Card>
-                    <View style={{ height: Height / 1.3, backgroundColor: '#fff', elevation: 5 }}>
+                    <View style={{ height: Height / 1.4, backgroundColor: '#fff', elevation: 5 }}>
                     <View style={{marginTop:'2%',flexDirection:'row',borderWidth:1,boarderColor:'black',marginLeft:'2%',marginRight:'2%'}}>
                         <TextInput placeholder='Search By Live Product ' style={{width:'88%',height:40}} />
                         <Image source={require('@Assets/icons/search.png')} style={{backgroundColor:'black',height:40,width:42}} />
                     </View>
-                                <ScrollView style={{marginBottom:35}}>
-                                    <View style={{flexDirection:'row',flexWrap:'wrap',marginTop:'3%'}}>
-                                        {
-                                            arr.map((item,index)=>{
-                                                return(
-                                                    <GroceryCard key={index}/>
-                                                )
-                                            })
-                                        }
-                                    </View>
-                                </ScrollView>
+                            <ScrollView>
+                                    <GroceryCard />
+                            </ScrollView>
                                 
                             
                     </View>
