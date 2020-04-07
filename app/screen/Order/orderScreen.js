@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-    View, TouchableOpacity, Text,ScrollView, Dimensions, Image
+    View, Text,ScrollView, Dimensions
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Tabs, Tab, TabHeading, Card, CardItem,ScrollableTab } from 'native-base';
 import CarOrderHistory from '@Component/OrderHistory/Car/carOrderHistory';
 import FoodOrderHistory from '@Component/OrderHistory/Food/foodOrderHistory';

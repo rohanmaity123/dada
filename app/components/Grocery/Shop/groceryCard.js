@@ -32,11 +32,10 @@ class GroceryCard extends React.Component {
                         return (
                             <View 
                                 style={{ width: '50%', alignItems: 'center' }}
-                                
+                                key={index}
                             >
                                 <TouchableWithoutFeedback 
-                                onPress={() => NavigationService.navigate('FoodSingleScreen',{'productData':item})}
-                                key={index}
+                                onPress={() => NavigationService.navigate('FoodSingleScreen',{'productData':item})}                                
                                 >
                                     <Card style={{ width: '90%', borderRadius: 5 }}>
                                         <Image source={{uri:item.image}} style={{ width: '100%', height: 100, borderTopLeftRadius: 5, borderTopRightRadius: 5 }} />

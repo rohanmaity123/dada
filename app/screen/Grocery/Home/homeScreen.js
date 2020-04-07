@@ -1,11 +1,10 @@
 import React from 'react';
 import{
-    View, TextInput, Image, Dimensions, ScrollView,StyleSheet,Text,TouchableOpacity,TouchableWithoutFeedback
+    View, TextInput, Image, Dimensions, ScrollView,StyleSheet,Text
 }from 'react-native';
 import ServicesHomeHeader from '@Component/Headers/HomeHeaders/servicesHomeHeader';
 import { Icon, Card } from 'native-base';
 import ImageSlider from 'react-native-image-slider';
-import NavigationService from '../../../Service/Navigation';
 import ShopCard from '../../../components/Grocery/Home/shopCard';
 import groceryService from '../../../Service/groceryService';
 
@@ -14,21 +13,23 @@ class GroceryHomeScreen extends React.Component{
         super(props);
         this.state = {
             shopData: [],
-            shopNo:''
+            shopNo:'',
+            type: this.props.navigation.getParam('type',''),
+            allImages:[]
         }
+        console.log('type',this.props.navigation.getParam('type',''))
     }
-    async componentDidMount() {
-        await this.shopDetails();
+    async componentDidMount(){
+        await this.bannerImage()
     }
-
-    shopDetails = async () => {
-        let shop = await groceryService.getshopdetails()
-        // console.log(shop)
+    bannerImage = async () =>{
+        let images = await groceryService.bannerimages();
+        console.log('images',images)
         this.setState({
-            shopData: shop.data,
-            shopNo:shop.count,
+            allImages:images.data,
         })
     }
+
     render(){
         const images = [
             require('@Assets/images/slider_food.png'),
@@ -73,10 +74,10 @@ class GroceryHomeScreen extends React.Component{
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <View style={{flexDirection:'row'}}>
                                     {
-                                        images.map((item,index)=>{
+                                       this.state.allImages.map((item,index)=>{
                                             return(
                                                 <Card style={{width:Width/1.9,borderRadius:5,marginLeft:8,height:140}} key={index}>
-                                                    <Image source={require('@Assets/images/img_car.png')} style={{width:Width/1.9,height:140,borderRadius:5}}/>
+                                                    <Image source={{uri:item.approval_image}} style={{width:Width/1.9,height:140,borderRadius:5}}/>
                                                 </Card>
                                             )
                                         })
@@ -91,7 +92,7 @@ class GroceryHomeScreen extends React.Component{
                                 <Text style={{fontWeight:'bold'}}>Total {this.state.shopNo} Shops </Text>
                         </View>
                         <View>
-                            <ShopCard />
+                            <ShopCard deliverytype ={ this.state.type} />
                         </View>
                     </View>
                 </ScrollView>

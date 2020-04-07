@@ -10,7 +10,8 @@ class ShopCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            shopData: []
+            shopData: [],
+            type:this.props.deliverytype
         }
     }
     async componentDidMount() {
@@ -18,7 +19,7 @@ class ShopCard extends React.Component {
     }
 
     shopDetails = async () => {
-        let shop = await groceryService.getshopdetails()
+        let shop = await groceryService.getshopdetails(this.state.type)
         console.log(shop)
         this.setState({
             shopData: shop.data,
@@ -31,7 +32,10 @@ class ShopCard extends React.Component {
                 {
                     this.state.shopData.map((item, index) => {
                         return (
-                            <TouchableWithoutFeedback onPress={() => NavigationService.navigate('ShopPage',{'shopData':item})}>
+                            <TouchableWithoutFeedback 
+                                onPress={() => NavigationService.navigate('ShopPage',{'shopData':item})}
+                                key={index}
+                            >
                             <Card style={{
                                     width: Width - 20, 
                                     alignSelf: 'center', 
@@ -40,8 +44,7 @@ class ShopCard extends React.Component {
                                     flexDirection: 'row', 
                                     alignItems: 'center', 
                                     borderRadius: 5 
-                                 }}
-                                 key={index}
+                                 }}                                 
                                  >
                                 <View style={{ 
                                         width: '40%', 

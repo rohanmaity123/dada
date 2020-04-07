@@ -2,7 +2,7 @@ import React from 'react';
 import{
     View, Text, StyleSheet, Image, TouchableOpacity
 }from 'react-native';
-import { Container, Header, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+import NavigationService from '@Service/Navigation';
 
 class GroceryDeleveryType extends React.Component{
     render(){
@@ -12,13 +12,13 @@ class GroceryDeleveryType extends React.Component{
                     <Text style={{fontWeight:'bold',fontSize:18}}>DELIVERY TYPE</Text>
                 </View>
                 <View style={{alignItems:'center',marginTop:250}}>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('groceryHomeScreen')}>
+                    <TouchableOpacity onPress={()=>NavigationService.navigate('groceryHomeScreen',{'type' : 'Pickup'})}>
                         <Text style={styles.language}>PICKUP</Text>
                     </TouchableOpacity>
                     
                     <Image source={require('@Assets/images/line4.png')}/>
 
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('groceryHomeScreen')}>
+                    <TouchableOpacity onPress={()=>NavigationService.navigate('groceryHomeScreen',{'type' : 'delivery'})}>
                         <Text style={styles.language}>DELIVERY</Text>
                     </TouchableOpacity>
                     
